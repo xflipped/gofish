@@ -6,6 +6,7 @@ package redfish
 
 import (
 	"encoding/json"
+	"fmt"
 	"reflect"
 
 	"github.com/stmcginnis/gofish/common"
@@ -191,22 +192,14 @@ func ListReferencedLogServices(c common.Client, link string) ([]*LogService, err
 
 // Entries gets the log entries of this service.
 func (logservice *LogService) Entries() (logEntries []*LogEntry, err error) {
-	entriesLink := logservice.entries
+	return ListReferencedLogEntrys(logservice.Client, logservice.entries)
+}
 
-	collectionError := common.NewCollectionError()
-
-	for ok := true; ok; ok = entriesLink != "" {
-		entryCollection, err := GetLogEntryCollection(logservice.Client, entriesLink)
-		if err != nil {
-			collectionError.Failures[entriesLink] = err
-			return logEntries, collectionError
-		}
-
-		logEntries = append(logEntries, entryCollection.Members...)
-		entriesLink = entryCollection.MembersNextLink
-	}
-
-	return
+func (logservice *LogService) FilteredEntries(options ...common.FilterOption) (logEntries []*LogEntry, err error) {
+	logservice.Entity.SetFilter(options...)
+	entriesLink := fmt.Sprintf("%s%s", logservice.entries, logservice.Entity.FilterOptions)
+	logservice.Entity.ClearFilter()
+	return ListReferencedLogEntrys(logservice.Client, entriesLink)
 }
 
 // ClearLog shall delete all entries found in the Entries collection for this
