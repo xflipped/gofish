@@ -195,11 +195,11 @@ func (logservice *LogService) Entries() (logEntries []*LogEntry, err error) {
 	return ListReferencedLogEntrys(logservice.Client, logservice.entries)
 }
 
+// FilteredEntries gets the log entries of this service with filtering applied (e.g. skip, top).
 func (logservice *LogService) FilteredEntries(options ...common.FilterOption) (logEntries []*LogEntry, err error) {
-	logservice.Entity.SetFilter(options...)
-	entriesLink := fmt.Sprintf("%s%s", logservice.entries, logservice.Entity.FilterOptions)
-	logservice.Entity.ClearFilter()
-	return ListReferencedLogEntrys(logservice.Client, entriesLink)
+	var filter common.Filter
+	filter.SetFilter(options...)
+	return ListReferencedLogEntrys(logservice.Client, fmt.Sprintf("%s%s", logservice.entries, filter))
 }
 
 // ClearLog shall delete all entries found in the Entries collection for this

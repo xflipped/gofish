@@ -20,8 +20,6 @@ type Entity struct {
 	Name string `json:"Name"`
 	// Client is the REST client interface to the system.
 	Client Client `json:"-"`
-	// FilterOptions is used for filtering
-	FilterOptions string
 	// etag contains the etag header when fetching the object. This is used to
 	// control updates to make sure the object has not been modified my a different
 	// process between fetching and updating that could cause conflicts.
@@ -140,35 +138,32 @@ func (e *Entity) Post(uri string, payload interface{}) error {
 	return err
 }
 
-// Filtering
-type FilterOption func(*Entity)
+type Filter string
+
+type FilterOption func(*Filter)
 
 func WithSkip(skipNum int) FilterOption {
-	return func(e *Entity) {
-		if e.FilterOptions == "" {
-			e.FilterOptions = fmt.Sprintf("?$skip=%d", skipNum)
-		} else {
-			e.FilterOptions = fmt.Sprintf("%s&$skip=%d", e.FilterOptions, skipNum)
-		}
+	return func(e *Filter) {
+		*e = Filter(fmt.Sprintf("%s$skip=%d", *e, skipNum))
 	}
 }
 
 func WithTop(topNum int) FilterOption {
-	return func(e *Entity) {
-		if e.FilterOptions == "" {
-			e.FilterOptions = fmt.Sprintf("?$top=%d", topNum)
-		} else {
-			e.FilterOptions = fmt.Sprintf("%s&$top=%d", e.FilterOptions, topNum)
+	return func(e *Filter) {
+		*e = Filter(fmt.Sprintf("%s$top=%d", *e, topNum))
+	}
+}
+
+func (e *Filter) SetFilter(opts ...FilterOption) {
+	*e = "?"
+	for idx, opt := range opts {
+		opt(e)
+		if idx < len(opts)-1 {
+			*e += "&"
 		}
 	}
 }
 
-func (e *Entity) SetFilter(opts ...FilterOption) {
-	for _, opt := range opts {
-		opt(e)
-	}
-}
-
-func (e *Entity) ClearFilter() {
-	e.FilterOptions = ""
+func (e *Filter) ClearFilter() {
+	*e = ""
 }
