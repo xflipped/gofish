@@ -11,25 +11,25 @@ import (
 )
 
 var simpleTaskServiceBody = `{
-   "@odata.context":"/redfish/v1/$metadata#TaskService.TaskService",
-   "@odata.etag":"\"1614826331\"",
-   "@odata.id":"/redfish/v1/TaskService",
-   "@odata.type":"#TaskService.v1_1_4.TaskService",
-   "CompletedTaskOverWritePolicy":"Oldest",
-   "DateTime":"2022-10-10T00:04:51-05:00",
-   "Description":"Task Service",
-   "Id":"TaskService",
-   "LifeCycleEventOnTaskStateChange":true,
-   "Name":"Task Service",
-   "ServiceEnabled":true,
-   "Status":{
-      "Health":"OK",
-      "State":"Enabled"
-   },
-   "Tasks":{
-      "@odata.id":"/redfish/v1/TaskService/Tasks"
-   }
-}`
+		"@odata.context":"/redfish/v1/$metadata#TaskService.TaskService",
+		"@odata.etag":"\"1614826331\"",
+		"@odata.id":"/redfish/v1/TaskService",
+		"@odata.type":"#TaskService.v1_1_4.TaskService",
+		"CompletedTaskOverWritePolicy":"Oldest",
+		"DateTime":"2022-10-10T00:04:51-05:00",
+		"Description":"Task Service",
+		"Id":"TaskService",
+		"LifeCycleEventOnTaskStateChange":true,
+		"Name":"Task Service",
+		"ServiceEnabled":true,
+		"Status":{
+			"Health":"OK",
+			"State":"Enabled"
+		},
+		"Tasks":{
+			"@odata.id":"/redfish/v1/TaskService/Tasks"
+		}
+	}`
 
 func TestTaskService(t *testing.T) {
 	var result TaskService

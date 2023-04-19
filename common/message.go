@@ -55,7 +55,7 @@ func GetMessage(c Client, uri string) (*Message, error) {
 
 // ListReferencedMessages gets the collection of Message from
 // a provided reference.
-func ListReferencedMessages(c Client, link string) ([]*Message, error) {
+func ListReferencedMessages(c Client, link string) ([]*Message, error) { //nolint:dupl
 	var result []*Message
 	if link == "" {
 		return result, nil

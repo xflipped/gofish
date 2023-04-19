@@ -49,6 +49,10 @@ func TestManagerAccount(t *testing.T) {
 		t.Errorf("Received invalid name: %s", result.Name)
 	}
 
+	if result.UserName != "Administrator" {
+		t.Errorf("Received invalid user name: %s", result.UserName)
+	}
+
 	if result.RoleID != "Admin" {
 		t.Errorf("Received invalid Role ID: %s", result.RoleID)
 	}
