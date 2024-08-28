@@ -217,6 +217,12 @@ func ConnectContext(ctx context.Context, config ClientConfig) (c *APIClient, err
 	return client, err
 }
 
+// ConnectContext is the same as Connect, but sets the ctx.
+func TryConnectContext(ctx context.Context, config ClientConfig) (c *APIClient, err error) { //nolint:gocritic
+	_, err = setupClientWithConfig(ctx, &config)
+	return
+}
+
 // ConnectDefault creates an unauthenticated connection to a Redfish service.
 func ConnectDefault(endpoint string) (c *APIClient, err error) {
 	return ConnectDefaultContext(context.Background(), endpoint)
