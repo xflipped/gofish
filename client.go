@@ -218,7 +218,7 @@ func ConnectContext(ctx context.Context, config ClientConfig) (c *APIClient, err
 }
 
 // ConnectContext is the same as Connect, but sets the ctx.
-func TryConnectContext(ctx context.Context, config ClientConfig) (c *APIClient, err error) { //nolint:gocritic
+func TryConnectContext(ctx context.Context, config ClientConfig) (err error) { //nolint:gocritic
 	_, err = setupClientWithConfig(ctx, &config)
 	return
 }
