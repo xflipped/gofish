@@ -245,9 +245,11 @@ type StorageController struct {
 	MemberID string
 	// Model shall be the name by which the manufacturer generally refers to the
 	// storage controller.
-	Model string
+	Model       string
+	PCIDeviceID string
 	// PCIeInterface is used to connect this PCIe-based controller to its host.
 	PCIeInterface PCIeInterface
+	PCIVendorID   string
 	// PartNumber shall be a part number assigned by the organization that is
 	// responsible for producing or manufacturing the storage controller.
 	PartNumber string
